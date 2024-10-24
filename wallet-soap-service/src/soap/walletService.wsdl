@@ -1,0 +1,136 @@
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://localhost/wallet"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://localhost/wallet">
+
+    <!-- Registrar Cliente -->
+    <message name="registrarClienteRequest">
+        <part name="documento" type="xsd:string"/>
+        <part name="nombre" type="xsd:string"/>
+        <part name="email" type="xsd:string"/>
+        <part name="celular" type="xsd:string"/>
+    </message>
+
+    <message name="registrarClienteResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <!-- Recargar Billetera -->
+    <message name="recargaBilleteraRequest">
+        <part name="documento" type="xsd:string"/>
+        <part name="celular" type="xsd:string"/>
+        <part name="valor" type="xsd:decimal"/>
+    </message>
+    <message name="recargaBilleteraResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <!-- Pagos -->
+    <message name="pagarRequest">
+        <part name="documento" type="xsd:string"/>
+        <part name="celular" type="xsd:string"/>
+        <part name="valor" type="xsd:decimal"/>
+    </message>
+    <message name="pagarResponse">
+        <part name="result" type="xsd:string"/>
+        <part name="sessionId" type="xsd:string"/>
+    </message>
+
+    <!-- Confirmar Pago -->
+    <message name="confirmarPagoRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="token" type="xsd:string"/>
+    </message>
+    <message name="confirmarPagoResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <!-- Consultar Saldo -->
+    <message name="consultarSaldoRequest">
+        <part name="documento" type="xsd:string"/>
+        <part name="celular" type="xsd:string"/>
+    </message>
+    <message name="consultarSaldoResponse">
+        <part name="saldo" type="xsd:decimal"/>
+    </message>
+    
+    <portType name="WalletServicePortType">
+        <!-- Operaciones para la billetera -->
+        <operation name="registrarCliente">
+            <input message="tns:registrarClienteRequest"/>
+            <output message="tns:registrarClienteResponse"/>
+        </operation>
+        <operation name="recargaBilletera">
+            <input message="tns:recargaBilleteraRequest"/>
+            <output message="tns:recargaBilleteraResponse"/>
+        </operation>
+        <operation name="pagar">
+            <input message="tns:pagarRequest"/>
+            <output message="tns:pagarResponse"/>
+        </operation>
+        <operation name="confirmarPago">
+            <input message="tns:confirmarPagoRequest"/>
+            <output message="tns:confirmarPagoResponse"/>
+        </operation>
+        <operation name="consultarSaldo">
+            <input message="tns:consultarSaldoRequest"/>
+            <output message="tns:consultarSaldoResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="WalletServiceBinding" type="tns:WalletServicePortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="registrarCliente">
+            <soap:operation soapAction="registrarCliente"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="recargaBilletera">
+            <soap:operation soapAction="recargaBilletera"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="pagar">
+            <soap:operation soapAction="pagar"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="confirmarPago">
+            <soap:operation soapAction="confirmarPago"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="consultarSaldo">
+            <soap:operation soapAction="consultarSaldo"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="WalletService">
+        <port name="WalletServicePort" binding="tns:WalletServiceBinding">
+            <soap:address location="http://localhost:3000/soap/wallet"/>
+        </port>
+    </service>
+</definitions>
