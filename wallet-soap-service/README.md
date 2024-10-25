@@ -43,3 +43,15 @@ $ npm run dev
 $ npx prisma migrate dev  # Aplicar migraciones
 $ npx prisma generate      # Genera el cliente de Prisma basado en el esquema definido
 ```
+
+## Tecnologías usadas
+
+- **Node.js**: Un entorno de JavaScript que permite ejecutar código JavaScript en servidores web.
+- **Express**: Un framework de Node.js para crear aplicaciones web y API RESTful.
+- **SOAP**: Un protocolo de mensajes ligero que permite la comunicación entre diferentes sistemas a través de Internet.
+- **Prisma**: Un ORM de generación de código de tipo en tiempo de ejecución (TypeScript) que ayuda a consultar la base de datos de manera segura y eficiente.
+- **MySQL**: Un sistema de gestión de bases de datos relacionales potente y de código abierto.
+- **Morgan**: Un middleware para Node.js que permite registrar las solicitudes HTTP en el servidor.
+- **Nodemailer**: Una biblioteca de Node.js para enviar correos electrónicos.
+
+---

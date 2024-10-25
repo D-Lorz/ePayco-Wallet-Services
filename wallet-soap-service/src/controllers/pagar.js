@@ -1,1 +1,0 @@
-exports.pagar = async (args) => { }
