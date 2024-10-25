@@ -20,7 +20,7 @@
     <message name="recargaBilleteraRequest">
         <part name="documento" type="xsd:string"/>
         <part name="celular" type="xsd:string"/>
-        <part name="valor" type="xsd:decimal"/>
+        <part name="valor" type="xsd:float"/>
     </message>
     <message name="recargaBilleteraResponse">
         <part name="result" type="xsd:string"/>
@@ -30,7 +30,7 @@
     <message name="pagarRequest">
         <part name="documento" type="xsd:string"/>
         <part name="celular" type="xsd:string"/>
-        <part name="valor" type="xsd:decimal"/>
+        <part name="valor" type="xsd:float"/>
     </message>
     <message name="pagarResponse">
         <part name="result" type="xsd:string"/>
@@ -52,7 +52,7 @@
         <part name="celular" type="xsd:string"/>
     </message>
     <message name="consultarSaldoResponse">
-        <part name="saldo" type="xsd:decimal"/>
+        <part name="saldo" type="xsd:float"/>
     </message>
     
     <portType name="WalletServicePortType">

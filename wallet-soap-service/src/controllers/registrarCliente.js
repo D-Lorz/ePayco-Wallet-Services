@@ -1,8 +1,8 @@
-import prisma from '@/prismaClient'
-import formatResponse from '@/utils/responseHelper'
+import prisma from '../prismaClient.js'
+import formatResponse from '../utils/responseHelper.js'
 
 // Registrar cliente
-exports.registrarCliente = async (args) => {
+const registrarCliente = async (args) => {
     const { documento, nombres, email, celular } = args
 
     if (!documento || !nombres || !email || !celular) {
@@ -27,6 +27,8 @@ exports.registrarCliente = async (args) => {
 
         return formatResponse(true, '00', 'Usuario registrado exitosamente.', {})
     } catch (error) {
-        return formatResponse(false, '03', 'Registro fallido', {})
+        return formatResponse(false, '07', 'Registro fallido', {})
     }
 };
+
+export default registrarCliente

@@ -51,6 +51,7 @@ module.exports = {
         'no-unused-vars': ['warn', { caughtErrors: 'none' }],
         'no-var': 'error',
         quotes: 'off',
-        'sort-keys-fix/sort-keys-fix': 'warn'
+        'sort-keys-fix/sort-keys-fix': 'warn',
+        'camelcase': 'off' // Desactiva la validación para camelCase
     }
 }
