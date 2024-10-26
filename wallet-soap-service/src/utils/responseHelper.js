@@ -1,10 +1,10 @@
-const formatResponse = (success, cod_error, message_error, data) => {
+const formatResponse = (cod_error, data, message_error, success) => {
     return {
-        success,
         cod_error,
+        data,
         message_error,
-        data
-    };
-};
+        success
+    }
+}
 
-export default formatResponse;
+export default formatResponse

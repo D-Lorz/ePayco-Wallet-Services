@@ -1,30 +1,30 @@
 import nodemailer from 'nodemailer'
 
-const  { USER_MAIL, PASS_MAIL, HOST_MAIL, SERVICE_MAIL } = process.env;
+const { USER_MAIL, PASS_MAIL, SMTP_HOST_MAIL, PORT_MAIL } = process.env
 
 const transporter = nodemailer.createTransport({
-    service: SERVICE_MAIL,
-    host: HOST_MAIL,
-    port: 465,
-    secure: true,
     auth: {
-        user: USER_MAIL,
-        pass: PASS_MAIL
-    }
-});
+        pass: PASS_MAIL,
+        user: USER_MAIL
+    },
+    host: SMTP_HOST_MAIL,
+    port: PORT_MAIL
+})
 
 const sendEmail = async (email, token) => {
     const mailOptions = {
         from: {
-            name: 'Wallet Test Dev',
-            address: USER_MAIL
+            address: USER_MAIL,
+            name: 'Wallet Test Dev'
         },
-        to: email,
         subject: 'Payment Token',
-        text: `Your payment token is: <b>${token}</b>`
-    };
+        text: `Your payment token is: <b>${token}</b>`,
+        to: email
+    }
 
-    await transporter.sendMail(mailOptions);
-};
+    const info = await transporter.sendMail(mailOptions)
+
+    console.log('\nMensaje enviado: %s', info.messageId)
+}
 
 export default sendEmail

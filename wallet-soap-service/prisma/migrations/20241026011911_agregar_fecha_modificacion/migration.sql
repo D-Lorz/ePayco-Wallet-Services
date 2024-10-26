@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `transaccion` ADD COLUMN `actualizadoEn` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3);

@@ -1,48 +1,70 @@
 import prisma from '../prismaClient.js'
+import sendEmail from '../utils/mailService.js'
 import formatResponse from '../utils/responseHelper.js'
 import { generateToken, generateSessionId } from '../utils/tokenGenerator.js'
-import sendEmail from '../utils/mailService.js'
 
 const realizarPago = async (args) => {
-    const { document, phone, amount } = args;
+    const { documento, celular, monto, referencia } = args
 
-    if (!document || !phone || !amount || amount <= 0) {
-        return formatResponse(false, '01', 'Parámetros inválidos', {});
+    if (!documento || !celular || !monto || monto <= 0 || !referencia) {
+        return formatResponse('01', {}, 'Parámetros inválidos', false)
     }
 
     try {
-        const user = await prisma.user.findUnique({ where: { document } });
+        const usuario = await prisma.usuario.findUnique({ where: { documento } })
 
-        if (!user || user.phone !== phone) {
-            return formatResponse(false, '02', 'Usuario no encontrado o número de celular no coincide', {});
+        if (!usuario || usuario.celular !== celular) {
+            return formatResponse('02', {}, 'Usuario no encontrado o número de celular no coincide', false)
         }
 
-        const wallet = await prisma.wallet.findUnique({ where: { document } });
+        const billetera = await prisma.billetera.findUnique({ where: { documento } })
 
-        if (wallet.balance < amount) {
-            return formatResponse(false, '03', 'Saldo insuficiente', {});
+        if (billetera.saldo < monto) {
+            return formatResponse('03', {}, 'Saldo insuficiente', false)
         }
 
-        const token = generateToken();
-        const sessionId = generateSessionId();
+        const token = generateToken()
+        const idSesion = generateSessionId()
 
         // Enviar el token por correo
-        await sendEmail(user.email, token);
+        try {
+            console.log("Enviando el token por correo electrónico...")
+            await sendEmail(usuario.email, token)
+        } catch (error) {
+            console.error('Error al enviar el token por correo electrónico:', error)
+            return formatResponse('04', {}, 'Error al enviar el token por correo electrónico', false)
+        }
 
-        // Guardar la sesión en la base de datos
-        await prisma.transactionSession.create({
+        console.log("Token: ", token)
+        console.log("ID de sesión: ", idSesion)
+
+        // Crear la transacción en estado "Pendiente"
+        const transaccion = await prisma.transaccion.create({
             data: {
-                document,
-                sessionId,
-                amount,
-                token
+                creadoEn: new Date(),
+                documento,
+                estado: 'Pendiente',
+                monto
             }
-        });
+        })
 
-        return formatResponse(true, '00', 'Token enviado exitosamente al email', { sessionId });
+        // Guardar la sesión de transacción en la base de datos
+        await prisma.sesionTransaccion.create({
+            data: {
+                creadoEn: new Date(),
+                documento,
+                expiraEn: new Date(new Date().getTime() + 1000 * 60 * 60 * 24), // Expira en 1 día
+                idSesion,
+                monto,
+                referencia,
+                token,
+                transaccion: { connect: { id: transaccion.id } }
+            }
+        })
+        return formatResponse('00', { idSesion }, 'Token enviado exitosamente al email', true)
     } catch (error) {
-        return formatResponse(false, '07', 'Inicialización de pago fallida', {});
+        return formatResponse('07', {}, 'Inicialización de pago fallida', false)
     }
-};
+}
 
 export default realizarPago

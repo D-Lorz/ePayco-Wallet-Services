@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,12 +8,13 @@ datasource db {
 }
 
 model Usuario {
-  id        Int        @id @default(autoincrement())
-  documento String     @unique
-  nombres   String
-  email     String
-  celular   String
-  billetera Billetera?
+  id            Int           @id @default(autoincrement())
+  documento     String        @unique
+  nombres       String
+  email         String
+  celular       String
+  billetera     Billetera?
+  transacciones Transaccion[]
 }
 
 model Billetera {
@@ -27,4 +22,29 @@ model Billetera {
   documento String  @unique
   saldo     Float   @default(0)
   usuario   Usuario @relation(fields: [documento], references: [documento])
+}
+
+model SesionTransaccion {
+  id            Int          @id @default(autoincrement())
+  idSesion      String       @unique
+  documento     String
+  token         String
+  monto         Float
+  referencia    String
+  creadoEn      DateTime     @default(now())
+  expiraEn      DateTime
+  transaccion   Transaccion? @relation(fields: [transaccionId], references: [id])
+  transaccionId Int?
+}
+
+model Transaccion {
+  id            Int                 @id @default(autoincrement())
+  documento     String
+  tipo          String              @default("Pago") // "Pago" o "Recarga"
+  monto         Float
+  estado        String              @default("Pendiente") // "Pendiente", "Confirmado" o "Rechazado"
+  creadoEn      DateTime            @default(now())
+  actualizadoEn DateTime?           @default(now())
+  usuario       Usuario             @relation(fields: [documento], references: [documento])
+  sesiones      SesionTransaccion[]
 }

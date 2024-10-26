@@ -3,25 +3,25 @@ import formatResponse from '../utils/responseHelper.js'
 
 // Consultar saldo
 const consultarSaldo = async (args) => {
-    const { document, phone } = args;
+    const { documento, celular } = args
 
-    if (!document || !phone) {
-        return formatResponse(false, '01', 'Parámetros inválidos', {});
+    if (!documento || !celular) {
+        return formatResponse(false, '01', 'Parámetros inválidos', {})
     }
 
     try {
-        const user = await prisma.user.findUnique({ where: { document } });
+        const usuario = await prisma.usuario.findUnique({ where: { documento } })
 
-        if (!user || user.phone !== phone) {
-            return formatResponse(false, '02', 'Usuario no encontrado o número de celular no coincide', {});
+        if (!usuario || usuario.celular !== celular) {
+            return formatResponse('02', {}, 'Usuario no encontrado o número de celular no coincide', false)
         }
 
-        const wallet = await prisma.wallet.findUnique({ where: { document } });
+        const billetera = await prisma.billetera.findUnique({ where: { documento } })
 
-        return formatResponse(true, '00', 'Saldo consultado exitosamente', { saldo: billetera.saldo });
+        return formatResponse('00', { saldo: billetera.saldo }, 'Saldo consultado exitosamente', true)
     } catch (error) {
-        return formatResponse(false, '07', 'Error al consultar saldo', {});
+        return formatResponse('07', {}, 'Error al consultar saldo', false)
     }
-};
+}
 
 export default consultarSaldo

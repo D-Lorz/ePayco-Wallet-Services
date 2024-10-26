@@ -3,28 +3,45 @@ import formatResponse from '../utils/responseHelper.js'
 
 // Recarga de billetera
 const recargarBilletera = async (args) => {
-    const { document, phone, amount } = args;
+    const { documento, celular, valor } = args
 
-    if (!document || !phone || !amount || amount <= 0) {
-        return formatResponse(false, '01', 'Parámetros inválidos', {});
+    if (!documento || !celular || !valor || valor <= 0) {
+        return formatResponse('01', {}, 'Parámetros inválidos', false)
     }
 
     try {
-        const user = await prisma.user.findUnique({ where: { document } });
+        const usuario = await prisma.usuario.findUnique({ where: { documento } })
 
-        if (!user || user.phone !== phone) {
-            return formatResponse(false, '02', 'Usuario no encontrado o número de celular no coincide', {});
+        if (!usuario || usuario.celular !== celular) {
+            return formatResponse('02', {}, 'Usuario no encontrado o número de celular no coincide', false)
         }
 
-        await prisma.wallet.update({
-            where: { document },
-            data: { balance: { increment: amount } }
-        });
+        // Actualizar Saldo de la Billetera
+        const updateBilletera = await prisma.billetera.update({
+            data: { saldo: { increment: valor } },
+            where: { documento }
+        })
 
-        return formatResponse(true, '00', 'Billetera recargada exitosamente', { });
+        console.log("updateBilletera: ", updateBilletera)
+
+        // Registrar la transacción de recarga
+        const agregarTransaccion = await prisma.transaccion.create({
+            data: {
+                actualizadoEn: new Date(),
+                creadoEn: new Date(),
+                documento,
+                estado: 'Confirmado',
+                monto: valor,
+                tipo: 'Recarga'
+            }
+        })
+
+        console.log("agregarTransaccion: ", agregarTransaccion)
+
+        return formatResponse('00', {}, 'Billetera recargada exitosamente', true)
     } catch (error) {
-        return formatResponse(false, '07', 'Recarga fallida', {});
+        return formatResponse('07', {}, 'Recarga fallida', false)
     }
-};
+}
 
 export default recargarBilletera

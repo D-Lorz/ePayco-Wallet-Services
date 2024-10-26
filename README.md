@@ -76,6 +76,7 @@ Todas las respuestas, tanto del servicio SOAP como del REST, manejan el mismo fo
   "message_error": "Mensaje explicativo",
   "data": {} // Array u objeto con las respuestas
 }
+```
 
 ## Author
 

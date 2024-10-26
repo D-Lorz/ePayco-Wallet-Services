@@ -17,17 +17,17 @@ Estas variables de entorno se utilizan para configurar la conexión a la base de
 - `USER_MAIL`: Dirección de correo electrónico del usuario.
 - `PASS_MAIL`: Contraseña del usuario.
 - `HOST_MAIL`: Host del servidor de correo electrónico.
-- `SERVICE_MAIL`: Servicio de correo electrónico.
+- `PORT_MAIL`: Puerto del servidor de correo electrónico.
 
 > ### Ejemplo de archivo .env
 >
 > ```.env
 > DATABASE_URL=mysql://userDB:passwordDB@localhost:3306/wallet
 > PORT=8000
-> USER_MAIL=user@example.com
-> PASS_MAIL=password
-> HOST_MAIL=smtp.example.com
-> SERVICE_MAIL=gmail
+> USER_MAIL=maddison53@ethereal.email
+> PASS_MAIL=jn7jnAPss4f63QBp6D
+> HOST_MAIL=smtp.ethereal.email
+> PORT_MAIL=587
 > ```
 
 ## Ejecución del servicio
