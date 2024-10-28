@@ -35,14 +35,21 @@ async function bootstrap() {
 
   // Configure Swagger for API documentation
   const config = new DocumentBuilder()
-    .setTitle('Wallet API')
-    .setDescription(`API for managing wallets and payments`)
+    .setTitle('API de Billetera y Pagos')
+    .setDescription(
+      `Esta API permite la gestión de billeteras virtuales y la ejecución de diversas operaciones financieras, proporcionando funcionalidades como el registro de nuevos clientes, recarga de saldo en la billetera, pagos seguros mediante confirmación de token y consulta de saldo actual.`,
+    )
     .setVersion('1.0')
     .build();
 
   // Create Swagger document and set up the Swagger UI
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+
+  const customOptions = {
+    customSiteTitle: 'API de Billetera y Pagos',
+  };
+
+  SwaggerModule.setup('api', app, document, customOptions);
 
   // Enable CORS with predefined settings
   app.enableCors(CORS);
