@@ -10,7 +10,7 @@ const recargarBilletera = async (args) => {
     }
 
     try {
-        const usuario = await prisma.usuario.findUnique({ where: { documento } })
+        const usuario = await prisma.usuario.findUnique({ include: { billetera: true }, where: { documento } })
 
         if (!usuario || usuario.celular !== celular) {
             return formatResponse('02', {}, 'Usuario no encontrado o número de celular no coincide', false)
@@ -38,7 +38,7 @@ const recargarBilletera = async (args) => {
 
         console.log("agregarTransaccion: ", agregarTransaccion)
 
-        return formatResponse('00', {}, 'Billetera recargada exitosamente', true)
+        return formatResponse('00', { billetera: updateBilletera }, 'Billetera recargada exitosamente', true)
     } catch (error) {
         return formatResponse('07', {}, 'Recarga fallida', false)
     }

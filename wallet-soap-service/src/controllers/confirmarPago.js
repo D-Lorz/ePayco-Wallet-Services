@@ -36,7 +36,7 @@ const confirmarPago = async (args) => {
         }
 
         // Actualizar el estado de la transacción a "Confirmado"
-        await prisma.transaccion.update({
+        const updateTransaccion = await prisma.transaccion.update({
             data: {
                 actualizadoEn: new Date(),
                 estado: "Confirmado"
@@ -47,7 +47,7 @@ const confirmarPago = async (args) => {
         // Eliminar la sesión
         await prisma.sesionTransaccion.delete({ where: { idSesion } })
 
-        return formatResponse('00', {}, 'Pago confirmado exitosamente', true)
+        return formatResponse('00', { transaccion: updateTransaccion }, 'Pago confirmado exitosamente', true)
     } catch (error) {
         console.error(error)
         return formatResponse('07', {}, 'Confirmación de pago fallida', false)

@@ -61,7 +61,7 @@ const realizarPago = async (args) => {
                 transaccion: { connect: { id: transaccion.id } }
             }
         })
-        return formatResponse('00', { idSesion }, 'Token enviado exitosamente al email', true)
+        return formatResponse('00', { idSesion, token: parseInt(token), transaccion }, 'Token enviado exitosamente al email', true)
     } catch (error) {
         return formatResponse('07', {}, 'Inicialización de pago fallida', false)
     }
