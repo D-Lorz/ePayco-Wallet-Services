@@ -18,7 +18,7 @@ Este proyecto implementa un sistema de billetera virtual, donde los usuarios pue
 
 ### Registro Clientes
 
-- **Método**: `registroCliente`
+- **Método**: `registrarCliente`
 - **Parámetros**:
   - Documento (string)
   - Nombres (string)
@@ -44,6 +44,7 @@ Este proyecto implementa un sistema de billetera virtual, donde los usuarios pue
   - Documento (string)
   - Número de Celular (string)
   - Monto (decimal)
+  - Referencia (string)
 
 **Descripción**: Permite realizar un pago. Se generará un token de 6 dígitos que se envía al correo del usuario registrado. El id de sesión debe ser usado para confirmar la compra.
 
@@ -69,12 +70,19 @@ Este proyecto implementa un sistema de billetera virtual, donde los usuarios pue
 
 Todas las respuestas, tanto del servicio SOAP como del REST, manejan el mismo formato de respuesta.
 
+- `success`: Booleano que indica si la operación tuvo éxito o no.
+- `cod_error`: Código de error, si la operación tuvo éxito, el valor será "00".
+- `message_error`: Mensaje explicativo, si la operación tuvo éxito o no.
+- `data`: Objeto con los datos devueltos por el servicio.
+
+### Ejemplo
+
 ```json
 {
-  "success": true, // o false
-  "cod_error": "00", // Código de error, "00" si es éxito
+  "success": true,
+  "cod_error": "00",
   "message_error": "Mensaje explicativo",
-  "data": {} // Array u objeto con las respuestas
+  "data": {}
 }
 ```
 
